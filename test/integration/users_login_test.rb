@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersLoginTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:micheal)
+    @user = users(:michael)
   end
 
   test "login with invalid information" do
@@ -18,8 +18,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with valid information" do
     get login_path
-    post login_path, session: { email: @user.email, password: 'password' }
-    p response.body
+    post login_path, session: { email: @user.email, password: 'example' }
     assert_redirected_to @user
     follow_redirect!
     assert_template 'users/show'
@@ -30,7 +29,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with valid information followed by logout" do
     get login_path
-    post login_path, session: {email: @user.email, password: 'password'}
+    post login_path, session: {email: @user.email, password: 'example'}
     assert is_logged_in?
     assert_redirected_to @user
     follow_redirect!
@@ -56,6 +55,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login without remembering" do
     log_in_as(@user,  remember_me: '0' )
-    assert_nil cookies['remember_token']
+    assert_empty cookies['remember_token']
   end
 end
